@@ -1,5 +1,5 @@
 grafana/
-influxdb/
+influxdb/db/
 homeassistant/home-assistant_v2.db
 homeassistant/home-assistant.log
 homeassistant/secrets.yaml

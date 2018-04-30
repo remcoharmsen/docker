@@ -66,3 +66,7 @@ light.gateway_light_7811dcb3a831:
   name:
   platform: xiaomi_aqara
   unique_id: rgb7811dcb3a831
+media_player.knijpdoos_radio:
+  name:
+  platform: squeezebox
+  unique_id: 00:04:20:2a:01:07
