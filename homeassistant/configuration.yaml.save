@@ -1,91 +1,77 @@
 homeassistant:
+  # Name of the location where Home Assistant is running
   name: Home
+  # Location required to calculate the time the sun rises and sets
   latitude: !secret latitude
   longitude: !secret longitude
   elevation: !secret elevation
   unit_system: metric
   time_zone: Europe/Amsterdam
+
   customize: !include customize.yaml
 
+frontend:
 config:
-
 http:
-#  api_password: !secret http_password
-#  base_url: https://devolharding.duckdns.org:8123
-#  ssl_certificate: /ssl/fullchain.pem
-#  ssl_key: /ssl/privkey.pem
-
+  api_password: !secret http_password
+  base_url: https://devolharding.duckdns.org:8123
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
 updater:
-
 discovery:
-
 history:
-
 # logbook:
-
-# map:
-
 sun:
-  
+
+# Text to speech
 # tts:
 #  - platform: google
 
+# Cloud
 cloud:
 
+# Xiaomi Aqara
 xiaomi_aqara:
   discovery_retry: 20
   gateways:
     - host: 192.168.1.42
       mac: !secret aqara_mac
       key: !secret aqara_key
+
+# MQTT
 mqtt:
   broker: m21.cloudmqtt.com
   port: 17322
   username: homeassistant
   password: !secret cloudmqtt_password
 
+# Pushbullet
 notify:
   - name: Pushbullet
     platform: pushbullet
     api_key: !secret pushbullet_apikey
 
-influxdb:
-  host: 192.168.1.14
-
+# Kodi
 #media_player LibreELEC:
 #  - platform: kodi
-#    host: 192.168.1.54
-#    port: 8080
-#    username: !secret kodi_username
-#    password: !secret kodi_password
+#    host: 192.168.1.51
+#    port: 80
 
+# camera 
 #camera:
 #  - platform: ffmpeg
 #    name: Camera
-#    input: !secret camera_url
+#    input: rtsp://admin:7598031@192.168.1.99:554/user=admin_password=V7EJJZI8_channel=1_stream=0.sdp?real_stream
 
 automation: !include automations.yaml
-
 climate: !include climate.yaml
-
 conversation: !include conversations.yaml
-
 device_tracker: !include device_tracker.yaml
-
-frontend: !include frontend.yaml
-
 google_assistant: !include google_assistant.yaml
-
 group: !include groups.yaml
-
 light: !include lights.yaml
-
 scene: !include scenes.yaml
-
 script: !include scripts.yaml
-
 sensor: !include sensors.yaml
-
 switch: !include switches.yaml
-
 zone: !include zones.yaml

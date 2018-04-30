@@ -1,0 +1,58 @@
+- name: Woonkamer normaal
+  entities:
+    light.bridge_led:
+      state: on
+      transition: 2
+      brightness_pct: 100
+      rgb_color: [255,145,36]
+    light.gateway_light_7811dcb3a831:
+      state: on
+      transition: 2
+      brightness_pct: 40
+      rgb_color: [255,145,36]
+    light.mqtt_staande_lampen:
+      state: on
+      transition: 2
+      brightness_pct: 75
+      color_temp: 500
+    light.mqtt_lampje:
+      state: on
+      transition: 2
+      brightness_pct: 100
+      color_temp: 500
+- name: Woonkamer gedimd
+  entities:
+    light.bridge_led:
+      state: on
+      transition: 2
+      brightness_pct: 25
+      rgb_color: [255,145,36]
+    light.gateway_light_7811dcb3a831:
+      state: on
+      transition: 2
+      brightness_pct: 10
+      rgb_color: [255,145,36]
+    light.mqtt_staande_lampen:
+      state: on
+      transition: 2
+      brightness_pct: 25
+      color_temp: 500
+    light.mqtt_lampje:
+      state: on
+      transition: 2
+      brightness_pct: 40 
+      color_temp: 500
+- name: Keuken warmwit
+  entities:
+    light.mqtt_keuken:
+      state: on
+      transition: 2
+      brightness_pct: 50
+      color_temp: 500
+- name: Keuken koudwit
+  entities:
+    light.mqtt_keuken:
+      state: on
+      transition: 2
+      brightness_pct: 75
+      color_temp: 154

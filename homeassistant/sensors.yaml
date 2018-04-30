@@ -1,0 +1,164 @@
+  - platform: pvoutput
+    system_id: !secret pvoutput_systemid
+    api_key: !secret pvoutput_apikey
+    scan_interval: 120
+  - platform: template
+    sensors:
+      power_generation:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "power_generation", "NaN") %}0{% else %}{{ states.sensor.pvoutput.attributes.power_generation }}{% endif %}'
+        friendly_name: 'Vermogen'
+        unit_of_measurement: 'Watt'
+      energy_generation:
+        value_template: '{% if is_state_attr("sensor.pvoutput", "energy_generation", "NaN") %}0{% else %}{{ "%0.2f"|format(states.sensor.pvoutput.attributes.energy_generation|float/1000) }}{% endif %}'
+        friendly_name: 'Opgewekt'
+        unit_of_measurement: 'kWh'
+
+  - platform: darksky
+    api_key: !secret darksky_apikey
+    units: auto
+    monitored_conditions:
+      - summary
+      - temperature
+      - apparent_temperature
+      - precip_probability
+      - precip_intensity
+      - wind_speed
+      - wind_bearing
+      - pressure
+      - humidity
+      - temperature_max
+      - temperature_min
+      
+  - platform: google_travel_time
+    name: Huis naar werk
+    api_key: !secret google_apikey
+    origin: Vinkwijkseweg 13, Zeddam
+    destination: Akkermaalsbos 12, Wageningen
+
+  - platform: google_travel_time
+    name: Werk naar huis
+    api_key: !secret google_apikey
+    origin: Akkermaalsbos 12, Wageningen
+    destination: Vinkwijkseweg 13, Zeddam
+
+  - platform: speedtest
+    minute: 0
+    hour:
+      - 0
+      - 6
+      - 12
+      - 18
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: processor_use
+      - type: last_boot
+      - type: since_last_boot
+
+  - platform: template
+    sensors:
+      battery_cube:
+        friendly_name: "Cube"
+        unit_of_measurement: '%'
+        value_template: "{{ states.binary_sensor.cube_158d00010fd2a3.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.binary_sensor.cube_158d00010fd2a3.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+      battery_doorsensor_hal:
+        friendly_name: "Achterdeur sensor"
+        unit_of_measurement: '%'
+        value_template: "{{ states.binary_sensor.door_window_sensor_158d0001b70b6c.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.binary_sensor.door_window_sensor_158d0001b70b6c.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+      battery_doorsensor_trapkast:
+        friendly_name: "Trapkast sensor"
+        unit_of_measurement: '%'
+        value_template: "{{ states.binary_sensor.door_window_sensor_158d0001b7acf8.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.binary_sensor.door_window_sensor_158d0001b7acf8.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+      battery_motionsensor_hal:
+        friendly_name: "Bewegingssensor hal"
+        unit_of_measurement: '%'
+        value_template: "{{ states.sensor.illumination_158d00022369c4.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.sensor.illumination_158d00022369c4.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+      battery_motionsensor:
+        friendly_name: "Bewegingssensor"
+        unit_of_measurement: '%'
+        value_template: "{{ states.sensor.illumination_158d000224f448.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.sensor.illumination_158d000224f448.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+      battery_watersensor:
+        friendly_name: "Watersensor"
+        unit_of_measurement: '%'
+        value_template: "{{ states.binary_sensor.water_leak_sensor_158d0001c35984.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.binary_sensor.water_leak_sensor_158d0001c35984.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+      battery_thermometer:
+        friendly_name: "Thermometer"
+        unit_of_measurement: '%'
+        value_template: "{{ states.sensor.temperature_158d0002273da8.attributes.battery_level }}"
+        icon_template: >
+          {% set battery_level = states.sensor.temperature_158d0002273da8.attributes.battery_level | default(0) | int %}
+          {% set battery_round = (battery_level / 10) | int * 10 %}
+          {% if battery_round >= 100 %}
+            mdi:battery
+          {% elif battery_round > 0 %}
+            mdi:battery-{{ battery_round }}
+          {% else %}
+            mdi:battery-alert
+          {% endif %}
+

@@ -1,0 +1,46 @@
+project_id: !secret gass_projectid
+client_id: !secret gass_clientid
+access_token: !secret gass_accesstoken
+expose_by_default: false
+exposed_domains:
+  - light
+  - scene
+  - climate
+entity_config:
+  light.mqtt_studeerkamer:
+    name: Study
+    expose: true
+  light.mqtt_staande_lampen:
+    name: Staande lampen
+    expose: true
+    aliases:
+      - Standing lamps
+  light.mqtt_lampje:
+    name: Lampje
+    expose: true
+    aliases:
+      - Small lamp
+  light.mqtt_keuken:
+    name: Keuken
+    expose: true
+    aliases:
+      - Cupboard
+  light.mqtt_keukenplint:
+    name: Keukenplint
+    expose: true
+    aliases: 
+      - Kitchen plinth
+  light.mqtt_overloop:
+    name: Overloop
+    expose: true
+    aliases:
+      - Overloop
+  light.mqtt_hal:
+    name: Hal
+    expose: true
+    aliases:
+      - Hal
+
+  climate.woonkamer_thermometer:
+    expose: true
+    name: Temperature

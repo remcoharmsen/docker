@@ -1,0 +1,5 @@
+  - platform: generic_thermostat
+    name: Woonkamer thermometer
+    heater: switch.woonkamer_heater
+    target_sensor: sensor.temperature_158d0002273da8
+

@@ -1,0 +1,133 @@
+- platform: limitlessled
+  bridges:
+    - host: 192.168.1.40           # WiFi box
+      groups:
+      - number: 1
+        type: bridge-led
+        name: Bridge LED
+#      - number: 1
+#        type: rgbww
+#        name: Staande lampen
+#        fade: on
+#      - number: 2
+#        type: rgbww
+#        name: Keuken
+#      - number: 3
+#        type: rgbww
+#        name: Overloop
+#      - number: 4
+#        type: rgbww
+#        name: Hal
+#
+#    - host: 192.168.1.43           # ESP WiFi Gateway - FUT092 afstandsbediening
+#      port: 3000
+#      groups:
+#      - number: 1
+#        type: rgbww
+#        name: Studeerkamer
+#        fade: on
+#
+#    - host: 192.168.1.43           # ESP WiFi Gateway - WiFi Box emulator
+#      port: 3001
+#      groups:
+#      - number: 1
+#        type: rgbww
+#        name: Staande lampen2
+#        fade: on
+#      - number: 1
+#        type: bridge-led
+#        name: Bridge LED2
+#      - number: 2
+#        type: rgbww
+#        name: Keuken2
+#      - number: 3
+#        type: rgbww
+#        name: Overloop2
+#      - number: 4
+#        type: rgbww
+#        name: Hal2
+
+    - host: 192.168.1.43           # ESP WiFi Gateway - FUT089 afstandsbediening
+      port: 3002
+      groups:
+      - number: 1
+        type: rgbww
+        name: Staande lampen
+        fade: on
+      - number: 2
+        type: rgbww
+        name: Lampje
+      - number: 3
+        type: rgbww
+        name: Keuken
+      - number: 4
+        type: rgbww
+        name: Keukenplint
+      - number: 7
+        type: rgbww
+        name: Overloop
+      - number: 8
+        type: rgbww
+        name: Hal
+
+
+# MQTT light emulator: ESP post MQTT topic bij ontvangst van signaal van remotes
+# 0x2C4E = FUT092 remote
+# 0x6527 = FUT089 remote
+# 0x584  = WiFi Box RGB_CCT
+# 0x586  = WiFi Box FUT089
+
+- name: "MQTT Studeerkamer"
+  # The command topic is derived by substituting real values for the
+  # tokens in the setting mqtt_topic_pattern (e.g., "rgb_cct" for
+  # ":device_type"):
+  #                        ______________ Device ID
+  #                       |      ________ Device Type
+  #                       |     |     ___ Group ID
+  #                       |     |    |
+  #                       v     v    v
+  command_topic: milight/0x2C4E/rgb_cct/1
+
+  # This is the same structure as above, but for the setting
+  # mqtt_state_topic_pattern. esp8266_milight_hub sends state updates
+  # to this topic.
+  state_topic: milight/states/0x2C4E/rgb_cct/1
+
+  # Use a YAML anchor for common settings so we can just reference
+  # them for other lights.
+  <<: &MILIGHT_PARAMS
+    platform: mqtt_json
+    color_temp: true
+    rgb: true
+    brightness: true
+
+- name: "MQTT Staande lampen"
+  command_topic: milight/0x6527/fut089/1
+  state_topic: milight/states/0x6527/fut089/1
+  <<: *MILIGHT_PARAMS
+
+- name: "MQTT Lampje"
+  command_topic: milight/0x6527/fut089/2
+  state_topic: milight/states/0x6527/fut089/2
+  <<: *MILIGHT_PARAMS
+
+- name: "MQTT Keuken"
+  command_topic: milight/0x6527/fut089/3
+  state_topic: milight/states/0x6527/fut089/3
+  <<: *MILIGHT_PARAMS
+
+- name: "MQTT Keukenplint"
+  command_topic: milight/0x6527/fut089/4
+  state_topic: milight/states/0x6527/fut089/4
+  <<: *MILIGHT_PARAMS
+
+- name: "MQTT Overloop"
+  command_topic: milight/0x6527/fut089/7
+  state_topic: milight/states/0x6527/fut089/7
+  <<: *MILIGHT_PARAMS
+
+- name: "MQTT Hal"
+  command_topic: milight/0x6527/fut089/8
+  state_topic: milight/states/0x6527/fut089/8
+  <<: *MILIGHT_PARAMS
+
