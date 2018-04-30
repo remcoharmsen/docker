@@ -1,0 +1,42 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: home-assistant
+    restart: unless-stopped
+    image: homeassistant/home-assistant
+    volumes:
+      - /home/remco/docker/homeassistant:/config
+    network_mode: host
+    privileged: true
+  portainer:
+    container_name: portainer
+    image: portainer/portainer
+    volumes:
+      - /home/remco/docker/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9000:9000"
+  influxdb:
+    container_name: influxdb
+    restart: unless-stopped
+    image: influxdb
+    volumes:
+      - /home/remco/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - /home/remco/docker/influxdb/db:/var/lib/influxdb
+    environment:
+      - INFLUX_GRAPHITE_ENABLED='true'
+    ports:
+      - "8086:8086"
+  grafana:
+    container_name: grafana
+    restart: unless-stopped
+    image: grafana/grafana
+    depends_on:
+      - "influxdb"
+    volumes:
+      - /home/remco/docker/grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: 'secret'
+    user: "1000"
