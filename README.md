@@ -8,7 +8,7 @@ Generate the default configuration file:
 
 Start InfluxDB container en run
 
-    docker exec -it influxdb influx
+    $ docker exec -it influxdb influx
 
 Maak database
 
