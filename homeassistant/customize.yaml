@@ -1,0 +1,109 @@
+# Dark sky
+  sensor.dark_sky_summary:
+    friendly_name: Weerbeeld
+  sensor.dark_sky_precip_type:
+    friendly_name: "Type neerslag"
+  sensor.dark_sky_temperature:
+    friendly_name: Temperatuur
+  sensor.dark_sky_apparent_temperature:
+    friendly_name: Gevoelstemperatuur
+  sensor.dark_sky_precip_probability:
+    friendly_name: "Kans op neerslag"
+  sensor.dark_sky_precip_intensity:
+    friendly_name: Intensiteit
+  sensor.dark_sky_wind_speed:
+    friendly_name: Windsnelheid
+  sensor.dark_sky_wind_bearing:
+    friendly_name: Windrichting
+  sensor.dark_sky_pressure:
+    friendly_name: Luchtdruk
+  sensor.dark_sky_humidity:
+    friendly_name: Luchtvochtigheid
+  sensor.dark_sky_daily_high_temperature:
+    friendly_name: "Maximum temperatuur"
+  sensor.dark_sky_daily_low_temperature:
+    friendly_name: "Minimum temperatuur"
+
+# Sun
+  sun.sun:
+    friendly_name: Zon
+
+# Light
+  light.gateway_light_7811dcb3a831:
+    friendly_name: Aqara Gateway
+    icon: mdi:lightbulb-outline
+  light.staande_lampen:
+    icon: mdi:lamp
+  light.lampje:
+    icon: mdi:lamp
+  light.bridge_led:
+    icon: mdi:lightbulb-outline
+    assumed_state: false
+  light.keuken:
+    icon: mdi:white-balance-iridescent
+  light.keukenplint:
+    icon: mdi:white-balance-iridescent
+  light.hal:
+    icon: mdi:ceiling-light
+  light.overloop:
+    icon: mdi:ceiling-light
+  light.studeerkamer:
+    icon: mdi:white-balance-iridescent
+
+  light.mqtt_staande_lampen:
+    friendly_name: Staande lampen
+    icon: mdi:lamp
+  light.mqtt_lampje:
+    friendly_name: Staand lampje
+    icon: mdi:lamp
+  light.mqtt_keuken:
+    friendly_name: Keuken
+    icon: mdi:white-balance-iridescent
+  light.mqtt_keukenplint:
+    friendly_name: Keukenplint
+    icon: mdi:white-balance-iridescent
+  light.mqtt_hal:
+    friendly_name: Hal
+    icon: mdi:ceiling-light
+  light.mqtt_overloop:
+    friendly_name: Overloop
+    icon: mdi:ceiling-light
+  light.mqtt_studeerkamer:
+    friendly_name: Studeerkamer
+    icon: mdi:white-balance-iridescent
+
+# Binary sensors
+  binary_sensor.motion_sensor_158d00022369c4:
+    friendly_name: Beweging hal
+  binary_sensor.motion_sensor_158d000224f448:
+    friendly_name: Beweging overloop
+  binary_sensor.cube_158d00010fd2a3:
+    friendly_name: Cube
+  binary_sensor.water_leak_sensor_158d0001c35984:
+    friendly_name: Watersensor
+  binary_sensor.door_window_sensor_158d0001b7acf8:
+    friendly_name: Trapkast
+  binary_sensor.door_window_sensor_158d0001b70b6c:
+    friendly_name: Achterdeur
+
+# Sensors
+  sensor.humidity_158d0002273da8:
+    friendly_name: Luchtvochtigheid
+  sensor.illumination_158d00022369c4:
+    friendly_name: Bewegingssensor hal
+  sensor.illumination_158d000224f448:
+    friendly_name: Bewegingssensor overloop
+  sensor.pressure_158d0002273da8:
+    friendly_name: Luchtdruk
+  sensor.temperature_158d0002273da8:
+    friendly_name: Temperatuur
+  sensor.illumination_7811dcb3a831:
+    friendly_name: Lichtsensor
+  sensor.huis_naar_werk:
+    icon: mdi:motorbike
+  sensor.werk_naar_huis:
+    icon: mdi:motorbike
+  sensor.power_generation:
+    icon: mdi:flash-outline
+  sensor.energy_generation:
+    icon: mdi:power

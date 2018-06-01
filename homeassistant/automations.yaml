@@ -1,1 +1,229 @@
-[]
+- alias: Lights on in the morning
+  trigger:
+  - platform: time
+    at: 05:30
+  action:
+    service: scene.turn_on
+    entity_id: scene.woonkamer_gedimd
+
+- alias: Lights off, sunrise
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 00:30:00
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.woonkamer
+
+- alias: Lights on in the evening
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:45:00
+  action:
+    service: scene.turn_on
+    entity_id: scene.woonkamer_normaal
+
+- alias: Lights off, bedtime
+  trigger:
+  - platform: time
+    at: '23:45'
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.woonkamer
+
+- alias: Remco is op het werk aangekomen
+  trigger:
+  - entity_id: device_tracker.mi5_mi5
+    event: enter
+    platform: zone
+    zone: zone.werk
+  action:
+  - data:
+      message: Remco is op het werk aangekomen
+    service: notify.pushbullet
+
+- alias: Remco is van het werk vertrokken
+  trigger:
+  - entity_id: device_tracker.mi5_mi5
+    event: leave
+    platform: zone
+    zone: zone.werk
+  action:
+  - data:
+      message: Remco is vertrokken van het werk
+    service: notify.pushbullet
+
+- alias: Remco is van huis vertrokken
+  trigger:
+  - entity_id: device_tracker.mi5_mi5
+    event: leave
+    platform: zone
+    zone: zone.home
+  action:
+  - data:
+      message: Remco is van huis vertrokken
+    service: notify.pushbullet
+
+- alias: Remco is thuis aangekomen
+  trigger:
+  - entity_id: device_tracker.mi5_mi5
+    event: enter
+    platform: zone
+    zone: zone.home
+  action:
+  - data:
+      message: Remco is thuis aangekomen
+    service: notify.pushbullet
+
+- alias: Cube event rotate
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d00010fd2a3
+      action_type: rotate
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.mqtt_staande_lampen
+        brightness: >-
+          {%if trigger.event.data.action_value | float > 0 %}
+          {{  states.light.mqtt_staande_lampen.attributes.brightness | int + 25 }}
+          {% else %}
+          {{  states.light.mqtt_staande_lampen.attributes.brightness | int - 25 }}
+          {% endif %}
+
+- alias: Cube event tap twice
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d00010fd2a3
+      action_type: tap_twice
+  action:
+    - service: light.toggle
+      entity_id: light.mqtt_staande_lampen
+
+- alias: Wissel kleurtemperatuur warm
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d00010fd2a3
+      action_type: flip90
+  action:
+    - service: scene.turn_on
+      entity_id: scene.keuken_warmwit
+
+- alias: Wissel kleurtemperatuur koud
+  trigger:
+    platform: event
+    event_type: cube_action
+    event_data:
+      entity_id: binary_sensor.cube_158d00010fd2a3
+      action_type: flip180
+  action:
+    - service: scene.turn_on
+      entity_id: scene.keuken_koudwit
+
+- alias: Achterdeur open
+  trigger:
+    platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0001b70b6c
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.illumination_158d00022369c4
+    below: 15
+  action:
+    - service: notify.pushbullet
+      data:
+        title: Achterdeur
+        target: "device/Xiaomi MI 5"
+        message: De achterdeur is geopend
+    - service: light.turn_on
+      data_template:
+        entity_id: light.mqtt_hal
+        brightness: >-
+          {% if now().hour | int < 13 %}
+          {{ 10 + ( now().hour | int * now().hour | int ) }}
+          {% else %}
+          {{ 154  - (( now().hour | int - 12 ) * ( now().hour | int - 12 )) }}
+          {% endif %}
+
+- alias: Achterdeur dicht
+  trigger:
+    platform: state
+    entity_id: binary_sensor.door_window_sensor_158d0001b70b6c
+    from: 'on'
+    to: 'off'
+  action:
+    service: notify.pushbullet
+    data:
+      title: Achterdeur
+      target: "device/Xiaomi MI 5"
+      message: De achterdeur is gesloten
+
+- alias: Beweging in de hal
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d00022369c4
+    to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.illumination_158d00022369c4
+    below: 15
+  action:
+    service: light.turn_on
+    data_template:
+      entity_id: light.mqtt_hal
+      brightness: >-
+        {% if now().hour | int < 13 %}
+        {{ 10 + ( now().hour | int * now().hour | int ) }}
+        {% else %}
+        {{ 154  - (( now().hour | int - 12 ) * ( now().hour | int - 12 )) }}
+        {% endif %}
+
+- alias: Geen beweging meer in de hal
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d00022369c4
+    to: 'off'
+    for:
+      minutes: 2
+  action:
+    service: light.turn_off
+    entity_id: light.mqtt_hal
+
+- alias: Beweging op de overloop
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d000224f448
+    to: 'on'
+  condition:
+    condition: numeric_state
+    entity_id: sensor.illumination_158d000224f448
+    below: 15
+  action:
+    - service: light.turn_on
+      data_template:
+        entity_id: light.mqtt_overloop
+        brightness: >-
+          {% if now().hour | int < 13 %}
+          {{ 10 + ( now().hour | int * now().hour | int ) }}
+          {% else %}
+          {{ 154  - (( now().hour | int - 12 ) * ( now().hour | int - 12 )) }}
+          {% endif %}
+
+- alias: Geen beweging meer op de overloop
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d000224f448
+    to: 'off'
+    for:
+      minutes: 2
+  action:
+    service: light.turn_off
+    entity_id: light.mqtt_overloop

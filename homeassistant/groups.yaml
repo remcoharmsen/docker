@@ -1,0 +1,159 @@
+default_view:
+  view: yes
+  icon: mdi:home
+  entities:
+    - group.familie
+    - group.woonkamer
+    - group.keuken
+    - group.overloop
+    - group.hal
+    - group.camera
+    - group.energie
+    - group.weer
+    - group.reistijd
+
+settings:
+  view: yes
+  icon: mdi:settings-outline
+  entities:
+    - group.verlichting
+    - group.systemen
+    - group.schakelaars
+    - group.batterijen
+    - group.automation
+
+verlichting:
+  name: Verlichting
+  entities: 
+    - light.mqtt_staande_lampen
+    - light.mqtt_lampje
+    - light.mqtt_keuken
+    - light.mqtt_keukenplint
+    - light.mqtt_overloop
+    - light.mqtt_hal
+    - light.mqtt_studeerkamer
+
+schakelaars:
+  name: Schakelaars
+  entities:
+    - switch.sonoff_basic
+
+familie:
+  name: Familie
+  entities:
+    - device_tracker.mi5_mi5        # remco
+    - device_tracker.4c57ca4388bb   # mara
+    - device_tracker.6c27793e9c6b   # lisa
+    - device_tracker.b4cef6682a8e   # kevin
+    - device_tracker.00eebd6368c6   # thomas
+
+reistijd:
+  name: Reistijd
+  entities:
+    - sensor.huis_naar_werk
+    - sensor.werk_naar_huis
+
+systemen:
+  name: Systemen
+  entities:
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+    - sensor.speedtest_ping
+    - sensor.cpu_used
+    - sensor.disk_used_home
+    - sensor.last_boot
+
+automation:
+  name: Automations
+  control: hidden
+  entities:
+    - automation.lights_off_bedtime
+    - automation.lights_off_sunrise
+    - automation.lights_on_in_the_evening
+    - automation.lights_on_in_the_morning
+    - automation.beweging_op_de_overloop
+    - automation.geen_beweging_meer_op_de_overloop
+    - automation.beweging_in_de_hal
+    - automation.geen_beweging_meer_in_de_hal
+    - automation.achterdeur_open
+    - automation.achterdeur_dicht
+    - automation.cube_event_rotate
+    - automation.cube_event_tap_twice
+    - automation.wissel_kleurtemperatuur_koud
+    - automation.wissel_kleurtemperatuur_warm
+    - automation.remco_is_op_het_werk_aangekomen
+    - automation.remco_is_thuis_aangekomen
+    - automation.remco_is_van_het_werk_vertrokken
+    - automation.remco_is_van_huis_vertrokken
+
+woonkamer:
+  name: Woonkamer
+  control: hidden
+  entities:
+    - light.bridge_led
+    - light.gateway_light_7811dcb3a831
+    - light.mqtt_staande_lampen
+    - light.mqtt_lampje
+    - scene.woonkamer_gedimd
+    - scene.woonkamer_normaal
+    - sensor.temperature_158d0002273da8
+    - sensor.humidity_158d0002273da8
+    - sensor.pressure_158d0002273da8
+keuken:
+  name: Keuken
+  control: hidden
+  entities:
+    - light.mqtt_keuken
+    - light.mqtt_keukenplint
+    - scene.keuken_koudwit
+    - scene.keuken_warmwit
+overloop:
+  name: Overloop
+  control: hidden
+  entities:
+    - light.mqtt_overloop
+    - light.mqtt_studeerkamer
+    - binary_sensor.motion_sensor_158d000224f448
+    - sensor.illumination_158d000224f448
+hal:
+  name: Hal
+  control: hidden
+  entities:
+    - light.mqtt_hal
+    - binary_sensor.door_window_sensor_158d0001b70b6c
+    - binary_sensor.door_window_sensor_158d0001b7acf8
+    - binary_sensor.motion_sensor_158d00022369c4
+    - sensor.illumination_158d00022369c4 
+energie:
+  name: Energie
+  entities:
+    - sensor.power_generation
+    - sensor.energy_generation
+weer:
+  name: Weer
+  entities:
+    - sun.sun
+    - sensor.dark_sky_summary
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_apparent_temperature
+    - sensor.dark_sky_daily_high_temperature
+    - sensor.dark_sky_daily_low_temperature
+    - sensor.dark_sky_humidity
+    - sensor.dark_sky_icon
+    - sensor.dark_sky_precip
+    - sensor.dark_sky_precip_intensity
+    - sensor.dark_sky_precip_probability
+    - sensor.dark_sky_pressure
+    - sensor.dark_sky_wind_bearing
+    - sensor.dark_sky_wind_speed
+batterijen:
+  name: Batterijen
+  entities:
+  - sensor.battery_cube
+  - sensor.battery_doorsensor_hal
+  - sensor.battery_doorsensor_trapkast
+  - sensor.battery_motionsensor
+  - sensor.battery_motionsensor_hal
+  - sensor.battery_thermometer
+  - sensor.battery_watersensor
+

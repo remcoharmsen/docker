@@ -162,3 +162,12 @@
             mdi:battery-alert
           {% endif %}
 
+  - platform: mqtt
+    name: "Sonoff basic Wifi SSID"
+    state_topic: "tele/sonoff/STATE"
+    value_template: "{{ value_json['Wifi'].SSId }}"
+
+  - platform: mqtt
+    name: "Sonoff basic Wifi signal"
+    state_topic: "tele/sonoff/STATE"
+    value_template: "{{ value_json['Wifi'].RSSI }}"

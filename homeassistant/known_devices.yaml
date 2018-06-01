@@ -659,3 +659,51 @@ e84e062715fb:
   name: 000c29330e73
   picture:
   track: true
+
+dc4f22454d15:
+  hide_if_away: false
+  icon:
+  mac: DC:4F:22:45:4D:15
+  name: dc4f22454d15
+  picture:
+  track: true
+
+dc4f223748d3:
+  hide_if_away: false
+  icon:
+  mac: DC:4F:22:37:48:D3
+  name: dc4f223748d3
+  picture:
+  track: true
+
+7845610be3b6:
+  hide_if_away: false
+  icon:
+  mac: 78:45:61:0B:E3:B6
+  name: 7845610be3b6
+  picture:
+  track: true
+
+f4963428717f:
+  hide_if_away: false
+  icon:
+  mac: F4:96:34:28:71:7F
+  name: f4963428717f
+  picture:
+  track: true
+
+aced5c3527a8:
+  hide_if_away: false
+  icon:
+  mac: AC:ED:5C:35:27:A8
+  name: aced5c3527a8
+  picture:
+  track: true
+
+14b4841e35a0:
+  hide_if_away: false
+  icon:
+  mac: 14:B4:84:1E:35:A0
+  name: 14b4841e35a0
+  picture:
+  track: true
