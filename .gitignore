@@ -4,10 +4,10 @@ grafana/
 influxdb/db/
 influxdb/meta/
 homeassistant/.cloud
-homeassistant/entity-registry.yaml
+homeassistant/entity_registry.yaml
 homeassistant/home-assistant_v2.db
 homeassistant/home-assistant.log
-homeassistant/known-devices.yaml
+homeassistant/known_devices.yaml
 homeassistant/secrets.yaml
 portainer/
 syncthing/
