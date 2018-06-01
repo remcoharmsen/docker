@@ -40,3 +40,113 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: 'secret'
     user: "1000"
+#  syncthing:
+#    container_name: syncthing
+#    restart: unless-stopped
+#    image: syncthing/syncthing
+#    network_mode: host
+#    volumes:
+#      - /home/remco/docker/syncthing:/var/syncthing/config
+#      - /home/remco/docker:/var/syncthing
+#    ports:
+#      - "8384:8384"
+#      - "22000:22000"
+
+# https://docs.docker.com/compose/compose-file/
+# Parameter:MssqlDataDockerVolume=False
+# Parameter:HttpPort=0
+# Parameter:HttpsPort=8888
+# Parameter:CoreVersion=1.19.0
+# Parameter:WebVersion=1.26.0
+
+  mssql:
+    image: bitwarden/mssql:1.19.0
+    container_name: bitwarden-mssql
+    restart: always
+    volumes:
+      - ./bwdata/mssql/data:/var/opt/mssql/data
+      - ./bwdata/logs/mssql:/var/opt/mssql/log
+      - ./bwdata/mssql/backups:/etc/bitwarden/mssql/backups
+    env_file:
+      - bwdata/docker/mssql.env
+      - bwdata/env/uid.env
+      - bwdata/env/mssql.override.env
+
+  web:
+    image: bitwarden/web:1.26.0
+    container_name: bitwarden-web
+    restart: always
+    volumes:
+      - ./bwdata/web:/etc/bitwarden/web
+    env_file:
+      - bwdata/env/uid.env
+
+  attachments:
+    image: bitwarden/attachments:1.19.0
+    container_name: bitwarden-attachments
+    restart: always
+    volumes:
+      - ./bwdata/core/attachments:/etc/bitwarden/core/attachments
+    env_file:
+      - bwdata/env/uid.env
+
+  api:
+    image: bitwarden/api:1.19.0
+    container_name: bitwarden-api
+    restart: always
+    volumes:
+      - ./bwdata/core:/etc/bitwarden/core
+      - ./bwdata/ca-certificates:/etc/bitwarden/ca-certificates
+      - ./bwdata/logs/api:/etc/bitwarden/logs
+    env_file:
+      - bwdata/docker/global.env
+      - bwdata/env/uid.env
+      - bwdata/env/global.override.env
+
+  identity:
+    image: bitwarden/identity:1.19.0
+    container_name: bitwarden-identity
+    restart: always
+    volumes:
+      - ./bwdata/identity:/etc/bitwarden/identity
+      - ./bwdata/core:/etc/bitwarden/core
+      - ./bwdata/ca-certificates:/etc/bitwarden/ca-certificates
+      - ./bwdata/logs/identity:/etc/bitwarden/logs
+    env_file:
+      - bwdata/docker/global.env
+      - bwdata/env/uid.env
+      - bwdata/env/global.override.env
+
+  admin:
+    image: bitwarden/admin:1.19.0
+    container_name: bitwarden-admin
+    restart: always
+    volumes:
+      - ./bwdata/core:/etc/bitwarden/core
+      - ./bwdata/ca-certificates:/etc/bitwarden/ca-certificates
+      - ./bwdata/logs/admin:/etc/bitwarden/logs
+    env_file:
+      - bwdata/docker/global.env
+      - bwdata/env/uid.env
+      - bwdata/env/global.override.env
+
+  icons:
+    image: bitwarden/icons:1.19.0
+    container_name: bitwarden-icons
+    restart: always
+    env_file:
+      - bwdata/env/uid.env
+
+  nginx:
+    image: bitwarden/nginx:1.19.0
+    container_name: bitwarden-nginx
+    restart: always
+    ports:
+      - '8888:8443'
+    volumes:
+      - ./bwdata/nginx:/etc/bitwarden/nginx
+      - ./bwdata/letsencrypt:/etc/letsencrypt
+      - ./bwdata/ssl:/etc/ssl
+      - ./bwdata//logs/nginx:/var/log/nginx
+    env_file:
+      - bwdata/env/uid.env
