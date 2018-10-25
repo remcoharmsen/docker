@@ -12,3 +12,4 @@ homeassistant/secrets.yaml
 portainer/
 radicale/
 shared/
+traefik/acme/acme.json
