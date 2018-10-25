@@ -6,6 +6,8 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Amsterdam
   customize: !include customize.yaml
+  auth_providers:
+   - type: trusted_networks
 
 config:
 
@@ -14,12 +16,17 @@ http:
 #  base_url: https://devolharding.duckdns.org:8123
 #  ssl_certificate: /ssl/fullchain.pem
 #  ssl_key: /ssl/privkey.pem
+  trusted_networks:
+    - 127.0.0.1
+    - ::1
+    - 192.168.0.0/24
+    - 192.168.1.0/24
 
 updater:
 
 discovery:
 
-history:
+# history:
 
 # logbook:
 
@@ -27,9 +34,6 @@ history:
 
 sun:
   
-# tts:
-#  - platform: google
-
 cloud:
 
 xiaomi_aqara:
@@ -38,11 +42,16 @@ xiaomi_aqara:
     - host: 192.168.1.42
       mac: !secret aqara_mac
       key: !secret aqara_key
+
 mqtt:
-  broker: m21.cloudmqtt.com
-  port: 17322
-  username: homeassistant
-  password: !secret cloudmqtt_password
+#  broker: m21.cloudmqtt.com
+#  port: 17322
+#  username: homeassistant
+#  password: !secret cloudmqtt_password
+#  discovery: true
+  broker: 192.168.1.14
+  port: 1883
+  discovery: true
 
 notify:
   - name: Pushbullet
@@ -52,12 +61,12 @@ notify:
 influxdb:
   host: 192.168.1.14
 
-#media_player LibreELEC:
-#  - platform: kodi
-#    host: 192.168.1.54
-#    port: 8080
-#    username: !secret kodi_username
-#    password: !secret kodi_password
+media_player LibreELEC:
+  - platform: kodi
+    host: 192.168.1.54
+    port: 8080
+    username: !secret kodi_username
+    password: !secret kodi_password
 
 #camera:
 #  - platform: ffmpeg

@@ -36,14 +36,14 @@ verlichting:
 schakelaars:
   name: Schakelaars
   entities:
-    - switch.sonoff_basic
+    - switch.zwembad_filter
 
 familie:
   name: Familie
   entities:
     - device_tracker.mi5_mi5        # remco
     - device_tracker.4c57ca4388bb   # mara
-    - device_tracker.6c27793e9c6b   # lisa
+    - device_tracker.2047dac5e4d6   # lisa
     - device_tracker.b4cef6682a8e   # kevin
     - device_tracker.00eebd6368c6   # thomas
 
@@ -62,6 +62,7 @@ systemen:
     - sensor.cpu_used
     - sensor.disk_used_home
     - sensor.last_boot
+    - sensor.molen_omwentelingen
 
 automation:
   name: Automations
@@ -81,10 +82,8 @@ automation:
     - automation.cube_event_tap_twice
     - automation.wissel_kleurtemperatuur_koud
     - automation.wissel_kleurtemperatuur_warm
-    - automation.remco_is_op_het_werk_aangekomen
-    - automation.remco_is_thuis_aangekomen
-    - automation.remco_is_van_het_werk_vertrokken
-    - automation.remco_is_van_huis_vertrokken
+    - automation.zwembadfilter_timer_aan
+    - automation.zwembadfilter_timer_uit
 
 woonkamer:
   name: Woonkamer

@@ -6,6 +6,7 @@ exposed_domains:
   - light
   - scene
   - climate
+  - media_player
 entity_config:
   light.mqtt_studeerkamer:
     name: Study

@@ -1,0 +1,32 @@
+esphomeyaml:
+  name: esp32_node2
+  platform: espressif32
+  board: esp32doit-devkit-v1
+
+wifi:
+  ssid: 'RioMare'
+  password: 'RioMareLikeVolharding'
+  manual_ip:
+    static_ip: 192.168.1.48
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+
+mqtt:
+  broker: '192.168.1.14'
+  port: '1883'
+  username: 'ESP32'
+  password: 'ZVgnuxVMLEn0'
+  topic_prefix: 'ESP32_node2'
+
+# Enable logging
+logger:
+
+ota:
+
+sensor:
+  - platform: pulse_counter
+    pin: 'GPIO15'
+    unit_of_measurement: 'tpm'
+    name: 'Pulse Counter'
+    update_interval: '1s'
+

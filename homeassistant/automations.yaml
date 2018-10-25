@@ -1,7 +1,7 @@
 - alias: Lights on in the morning
   trigger:
   - platform: time
-    at: 05:30
+    at: 05:30:00
   action:
     service: scene.turn_on
     entity_id: scene.woonkamer_gedimd
@@ -27,7 +27,7 @@
 - alias: Lights off, bedtime
   trigger:
   - platform: time
-    at: '23:45'
+    at: '23:45:00'
   action:
     service: homeassistant.turn_off
     entity_id: group.woonkamer
@@ -227,3 +227,19 @@
   action:
     service: light.turn_off
     entity_id: light.mqtt_overloop
+
+- alias: Zwembadfilter timer aan
+  trigger:
+  - platform: time
+    at: '11:00:00'
+  action:
+    service: switch.turn_on
+    entity_id: switch.zwembad_filter
+
+- alias: Zwembadfilter timer uit
+  trigger:
+  - platform: time
+    at: '17:00:00'
+  action:
+    service: switch.turn_off
+    entity_id: switch.zwembad_filter

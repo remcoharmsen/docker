@@ -107,3 +107,6 @@
     icon: mdi:flash-outline
   sensor.energy_generation:
     icon: mdi:power
+  sensor.molen_omwentelingen:
+    icon: mdi:rotate-3d
+    unit_of_measurement: tpm

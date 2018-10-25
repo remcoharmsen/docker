@@ -1,5 +1,5 @@
   - platform: mqtt
-    name: "Sonoff basic"
+    name: "Zwembad filter"
     state_topic: "stat/sonoff/POWER"
     command_topic: "cmnd/sonoff/POWER"
     availability_topic: "tele/sonoff/LWT"

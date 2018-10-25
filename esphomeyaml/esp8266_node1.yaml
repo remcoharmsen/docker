@@ -1,0 +1,33 @@
+esphomeyaml:
+  name: esp8266_node1
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: 'RioMare'
+  password: 'RioMareLikeVolharding'
+  manual_ip:
+    static_ip: 192.168.1.45
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0
+
+mqtt:
+  broker: '192.168.1.14'
+  port: '1883'
+  username: 'ESP32'
+  password: 'ZVgnuxVMLEn0'
+
+# Enable logging
+logger:
+  level: INFO
+
+ota:
+
+sensor:
+  - platform: pulse_counter
+    pin: D10
+    unit_of_measurement: 'tpm'
+    name: 'Molen omwentelingen'
+    update_interval: '15s'
+    filters: 
+      - multiply: -0.006289

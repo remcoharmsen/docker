@@ -1,5 +1,5 @@
-bwdata
-config
+bwdata/
+esphomeyaml/
 grafana/
 influxdb/db/
 influxdb/meta/
@@ -10,8 +10,5 @@ homeassistant/home-assistant.log
 homeassistant/known_devices.yaml
 homeassistant/secrets.yaml
 portainer/
-syncthing/
-.stignore
-.stfolder
-Sync
-syncthing
+radicale/data/
+shared/

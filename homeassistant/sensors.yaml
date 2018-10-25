@@ -171,3 +171,7 @@
     name: "Sonoff basic Wifi signal"
     state_topic: "tele/sonoff/STATE"
     value_template: "{{ value_json['Wifi'].RSSI }}"
+
+  - platform: mqtt
+    name: "Molen omwentelingen"
+    state_topic: "esp8266_node1/sensor/molen_omwentelingen/state"

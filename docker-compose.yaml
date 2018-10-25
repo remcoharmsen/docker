@@ -1,21 +1,49 @@
 version: '3'
+
 services:
   homeassistant:
     container_name: home-assistant
     restart: unless-stopped
-    image: homeassistant/home-assistant
+    image: homeassistant/home-assistant:latest
     volumes:
       - /home/remco/docker/homeassistant:/config
     network_mode: host
     privileged: true
+
   portainer:
     container_name: portainer
+    restart: unless-stopped
     image: portainer/portainer
     volumes:
       - /home/remco/docker/portainer:/data
+      - /home/remco/docker/shared:/shared
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "9000:9000"
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=portainer"
+#      - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
+      - "traefik.frontend.redirect.regex=^(.*)/portainer$$"
+      - "traefik.frontend.redirect.replacement=$$1/portainer/"
+      - "traefik.frontend.rule=PathPrefix:/portainer;ReplacePathRegex: ^/portainer/(.*) /$$1"
+#      - "traefik.frontend.rule=Host:${DOMAINNAME}; PathPrefixStrip: /portainer"
+      - "traefik.port=9000"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+      - "traefik.frontend.auth.basic.removeHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=example.com"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+
   influxdb:
     container_name: influxdb
     restart: unless-stopped
@@ -27,6 +55,7 @@ services:
       - INFLUX_GRAPHITE_ENABLED='true'
     ports:
       - "8086:8086"
+
   grafana:
     container_name: grafana
     restart: unless-stopped
@@ -40,24 +69,6 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: 'secret'
     user: "1000"
-#  syncthing:
-#    container_name: syncthing
-#    restart: unless-stopped
-#    image: syncthing/syncthing
-#    network_mode: host
-#    volumes:
-#      - /home/remco/docker/syncthing:/var/syncthing/config
-#      - /home/remco/docker:/var/syncthing
-#    ports:
-#      - "8384:8384"
-#      - "22000:22000"
-
-# https://docs.docker.com/compose/compose-file/
-# Parameter:MssqlDataDockerVolume=False
-# Parameter:HttpPort=0
-# Parameter:HttpsPort=8888
-# Parameter:CoreVersion=1.19.0
-# Parameter:WebVersion=1.26.0
 
   mssql:
     image: bitwarden/mssql:1.19.0
@@ -142,7 +153,7 @@ services:
     container_name: bitwarden-nginx
     restart: always
     ports:
-      - '8888:8443'
+      - "8888:8443"
     volumes:
       - ./bwdata/nginx:/etc/bitwarden/nginx
       - ./bwdata/letsencrypt:/etc/letsencrypt
@@ -150,3 +161,87 @@ services:
       - ./bwdata//logs/nginx:/var/log/nginx
     env_file:
       - bwdata/env/uid.env
+  
+  esphomeyaml:
+    image: ottowinter/esphomeyaml:dev
+    container_name: esphomeyaml
+    restart: always
+    ports:
+      - "6052:6052"
+      - "6123:6123"
+    volumes:
+      - /home/remco/docker/esphomeyaml:/config
+    command:
+      - "/config"
+      - "dashboard"
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    privileged: true
+
+  mqtt:
+    container_name: mosquitto_mqtt
+    image: eclipse-mosquitto:latest
+    restart: always
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - /home/remco/docker/mosquitto/data:/mosquitto/data
+      - /home/remco/docker/mosquitto/config:/mosquitto/config
+      - /home/remco/docker/mosquitto/log:/mosquitto/log
+
+  radicale:
+    image: tomsquest/docker-radicale
+    container_name: radicale
+    ports:
+      - "5232:5232"
+    read_only: true
+    volumes:
+      - /home/remco/docker/radicale/data:/data
+      - /home/remco/docker/radicale/config:/config
+
+  traefik:
+    hostname: traefik
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    domainname: ${DOMAINNAME}
+    networks:
+      - default
+      - traefik_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+#      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"  
+      - "traefik.frontend.rule=Host:${DOMAINNAME}; PathPrefixStrip: /traefik"
+      - "traefik.port=8080"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=example.com"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/remco/docker/traefik:/etc/traefik
+      - /home/remco/docker/shared:/shared
+
+
+
+##################################################
+# keep networks at the end #
+
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy
+  default:
+    driver: bridge
