@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     image: homeassistant/home-assistant:latest
     volumes:
-      - /home/remco/docker/homeassistant:/config
+      - ${USERDIR}/docker/homeassistant:/config
     network_mode: host
     privileged: true
 
@@ -15,8 +15,8 @@ services:
     restart: unless-stopped
     image: portainer/portainer
     volumes:
-      - /home/remco/docker/portainer:/data
-      - /home/remco/docker/shared:/shared
+      - ${USERDIR}/docker/portainer:/data
+      - ${USERDIR}/docker/shared:/shared
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "9000:9000"
@@ -49,8 +49,8 @@ services:
     restart: unless-stopped
     image: influxdb
     volumes:
-      - /home/remco/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      - /home/remco/docker/influxdb/db:/var/lib/influxdb
+      - ${USERDIR}/docker/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ${USERDIR}/docker/influxdb/db:/var/lib/influxdb
     environment:
       - INFLUX_GRAPHITE_ENABLED='true'
     ports:
@@ -63,105 +63,13 @@ services:
     depends_on:
       - "influxdb"
     volumes:
-      - /home/remco/docker/grafana:/var/lib/grafana
+      - ${USERDIR}/docker/grafana:/var/lib/grafana
     ports:
       - "3000:3000"
     environment:
       GF_SECURITY_ADMIN_PASSWORD: 'secret'
     user: "1000"
 
-  mssql:
-    image: bitwarden/mssql:1.19.0
-    container_name: bitwarden-mssql
-    restart: always
-    volumes:
-      - ./bwdata/mssql/data:/var/opt/mssql/data
-      - ./bwdata/logs/mssql:/var/opt/mssql/log
-      - ./bwdata/mssql/backups:/etc/bitwarden/mssql/backups
-    env_file:
-      - bwdata/docker/mssql.env
-      - bwdata/env/uid.env
-      - bwdata/env/mssql.override.env
-
-  web:
-    image: bitwarden/web:1.26.0
-    container_name: bitwarden-web
-    restart: always
-    volumes:
-      - ./bwdata/web:/etc/bitwarden/web
-    env_file:
-      - bwdata/env/uid.env
-
-  attachments:
-    image: bitwarden/attachments:1.19.0
-    container_name: bitwarden-attachments
-    restart: always
-    volumes:
-      - ./bwdata/core/attachments:/etc/bitwarden/core/attachments
-    env_file:
-      - bwdata/env/uid.env
-
-  api:
-    image: bitwarden/api:1.19.0
-    container_name: bitwarden-api
-    restart: always
-    volumes:
-      - ./bwdata/core:/etc/bitwarden/core
-      - ./bwdata/ca-certificates:/etc/bitwarden/ca-certificates
-      - ./bwdata/logs/api:/etc/bitwarden/logs
-    env_file:
-      - bwdata/docker/global.env
-      - bwdata/env/uid.env
-      - bwdata/env/global.override.env
-
-  identity:
-    image: bitwarden/identity:1.19.0
-    container_name: bitwarden-identity
-    restart: always
-    volumes:
-      - ./bwdata/identity:/etc/bitwarden/identity
-      - ./bwdata/core:/etc/bitwarden/core
-      - ./bwdata/ca-certificates:/etc/bitwarden/ca-certificates
-      - ./bwdata/logs/identity:/etc/bitwarden/logs
-    env_file:
-      - bwdata/docker/global.env
-      - bwdata/env/uid.env
-      - bwdata/env/global.override.env
-
-  admin:
-    image: bitwarden/admin:1.19.0
-    container_name: bitwarden-admin
-    restart: always
-    volumes:
-      - ./bwdata/core:/etc/bitwarden/core
-      - ./bwdata/ca-certificates:/etc/bitwarden/ca-certificates
-      - ./bwdata/logs/admin:/etc/bitwarden/logs
-    env_file:
-      - bwdata/docker/global.env
-      - bwdata/env/uid.env
-      - bwdata/env/global.override.env
-
-  icons:
-    image: bitwarden/icons:1.19.0
-    container_name: bitwarden-icons
-    restart: always
-    env_file:
-      - bwdata/env/uid.env
-
-  nginx:
-    image: bitwarden/nginx:1.19.0
-    container_name: bitwarden-nginx
-    restart: always
-    ports:
-      - "8888:8443"
-    volumes:
-      - ./bwdata/nginx:/etc/bitwarden/nginx
-      - ./bwdata/letsencrypt:/etc/letsencrypt
-      - ./bwdata/ssl:/etc/ssl
-      - ./bwdata//logs/nginx:/var/log/nginx
-    env_file:
-      - bwdata/env/uid.env
-  
   esphomeyaml:
     image: ottowinter/esphomeyaml:dev
     container_name: esphomeyaml
@@ -170,7 +78,7 @@ services:
       - "6052:6052"
       - "6123:6123"
     volumes:
-      - /home/remco/docker/esphomeyaml:/config
+      - ${USERDIR}/docker/esphomeyaml:/config
     command:
       - "/config"
       - "dashboard"
@@ -186,9 +94,9 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - /home/remco/docker/mosquitto/data:/mosquitto/data
-      - /home/remco/docker/mosquitto/config:/mosquitto/config
-      - /home/remco/docker/mosquitto/log:/mosquitto/log
+      - ${USERDIR}/docker/mosquitto/data:/mosquitto/data
+      - ${USERDIR}/docker/mosquitto/config:/mosquitto/config
+      - ${USERDIR}/docker/mosquitto/log:/mosquitto/log
 
   radicale:
     image: tomsquest/docker-radicale
@@ -197,8 +105,8 @@ services:
       - "5232:5232"
     read_only: true
     volumes:
-      - /home/remco/docker/radicale/data:/data
-      - /home/remco/docker/radicale/config:/config
+      - ${USERDIR}/docker/radicale/data:/data
+      - ${USERDIR}/docker/radicale/config:/config
 
   traefik:
     hostname: traefik
@@ -231,8 +139,8 @@ services:
       - "traefik.frontend.headers.frameDeny=true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/remco/docker/traefik:/etc/traefik
-      - /home/remco/docker/shared:/shared
+      - ${USERDIR}/docker/traefik:/etc/traefik
+      - ${USERDIR}/docker/shared:/shared
 
 
 
