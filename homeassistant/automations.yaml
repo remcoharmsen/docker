@@ -1,7 +1,15 @@
 - alias: Lights on in the morning
   trigger:
-  - platform: time
-    at: 05:30:00
+  - platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.woonkamerverlichting_ochtend_aan.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+  condition:
+    condition: time
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
   action:
     service: scene.turn_on
     entity_id: scene.woonkamer_gedimd
@@ -26,11 +34,34 @@
 
 - alias: Lights off, bedtime
   trigger:
-  - platform: time
-    at: '23:45:00'
+  - platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.woonkamerverlichting_avond_uit.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+  condition:
+    condition: time
+    weekday:
+      - sun
+      - mon
+      - tue
+      - wed
+      - thu
   action:
     service: homeassistant.turn_off
     entity_id: group.woonkamer
+
+- alias: Lights off, weekend bedtime
+  trigger:
+  - platform: template
+    value_template: "{{ states('sensor.time') == (states.input_datetime.woonkamerverlichting_weekendavond_uit.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+  condition:
+    condition: time
+    weekday:
+      - fri
+      - sat
+      - sun
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.woonkamer
+
 
 - alias: Remco is op het werk aangekomen
   trigger:

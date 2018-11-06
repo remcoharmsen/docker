@@ -1,4 +1,5 @@
 bwdata/
+certificates/
 esphomeyaml/
 grafana/
 influxdb/db/
@@ -9,7 +10,9 @@ homeassistant/home-assistant_v2.db
 homeassistant/home-assistant.log
 homeassistant/known_devices.yaml
 homeassistant/secrets.yaml
+mailserver/config
 portainer/
 radicale/
 shared/
 traefik/acme/acme.json
+

@@ -23,20 +23,25 @@ address = ":8080"
 
 # Let's encrypt configuration
 [acme]
-email = "${EMAIL}" #any email id will work
-storage="/etc/traefik/acme/acme.json"
+email = "remcoharmsen@hotmail.com" #any email id will work
+storage = "/etc/traefik/acme/acme.json"
+caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 entryPoint = "https"
-acmeLogging=true 
+acmeLogging = true 
 onDemand = false #create certificate when container is created
-onHostRule = true
-  # Use a HTTP-01 acme challenge rather than TLS-SNI-01 challenge
-  [acme.httpChallenge]
-  entryPoint = "http"
+#onHostRule = true
+[acme.httpChallenge]
+entryPoint = "http"
+
+[[acme.domains]]
+   main = "remcoharmsen.com"
+   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","calendar.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com"]
 
 # Connection to docker host system (docker.sock)
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "${DOMAINNAME}"
+domain = "remcoharmsen.com"
 watch = true
 # This will hide all docker containers that don't have explicitly  
 # set label to "enable"

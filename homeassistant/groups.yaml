@@ -10,21 +10,22 @@ default_view:
     - group.camera
     - group.energie
     - group.weer
-    - group.reistijd
 
 settings:
   view: yes
   icon: mdi:settings-outline
   entities:
     - group.verlichting
-    - group.systemen
     - group.schakelaars
+    - group.instellingen
     - group.batterijen
     - group.automation
 
 verlichting:
   name: Verlichting
   entities: 
+    - light.bridge_led
+    - light.gateway_light_7811dcb3a831
     - light.mqtt_staande_lampen
     - light.mqtt_lampje
     - light.mqtt_keuken
@@ -32,6 +33,8 @@ verlichting:
     - light.mqtt_overloop
     - light.mqtt_hal
     - light.mqtt_studeerkamer
+    - light.fastled_ws2812b_light_2
+    - light.fastled_ws2812b_light
 
 schakelaars:
   name: Schakelaars
@@ -63,12 +66,14 @@ systemen:
     - sensor.disk_used_home
     - sensor.last_boot
     - sensor.molen_omwentelingen
+    - sensor.time
 
 automation:
   name: Automations
   control: hidden
   entities:
     - automation.lights_off_bedtime
+    - automation.lights_off_weekend_bedtime
     - automation.lights_off_sunrise
     - automation.lights_on_in_the_evening
     - automation.lights_on_in_the_morning
@@ -156,3 +161,9 @@ batterijen:
   - sensor.battery_thermometer
   - sensor.battery_watersensor
 
+instellingen:
+  name: Instellingen
+  entities:
+  - input_datetime.woonkamerverlichting_ochtend_aan
+  - input_datetime.woonkamerverlichting_avond_uit
+  - input_datetime.woonkamerverlichting_weekend_avond_uit

@@ -98,3 +98,32 @@ sensor: !include sensors.yaml
 switch: !include switches.yaml
 
 zone: !include zones.yaml
+
+
+input_datetime:
+  woonkamerverlichting_ochtend_aan:
+    name: "Verlichting ochtend aan"
+    has_date: false
+    has_time: true
+    initial: '05:30'
+  woonkamerverlichting_avond_uit:
+    name: "Verlichting avond uit"
+    has_date: false
+    has_time: true
+    initial: '23:00'
+  woonkamerverlichting_weekend_avond_uit:
+    name: "Verlichting weekendavond uit"
+    has_date: false
+    has_time: true
+    initial: '0:00'
+  woonkamerverlichting_offset_ochtend:
+    name: "Offset verlichting uit"
+    has_date: false
+    has_time: true
+    initial: '0:30'
+  woonkamerverlichting_offset_middag:
+    name: "Offset verlichting aan"
+    has_date: false
+    has_time: true
+    initial: '0:45'
+

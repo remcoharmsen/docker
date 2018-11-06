@@ -29,18 +29,6 @@
       - temperature_max
       - temperature_min
       
-  - platform: google_travel_time
-    name: Huis naar werk
-    api_key: !secret google_apikey
-    origin: Vinkwijkseweg 13, Zeddam
-    destination: Akkermaalsbos 12, Wageningen
-
-  - platform: google_travel_time
-    name: Werk naar huis
-    api_key: !secret google_apikey
-    origin: Akkermaalsbos 12, Wageningen
-    destination: Vinkwijkseweg 13, Zeddam
-
   - platform: speedtest
     minute: 0
     hour:
@@ -175,3 +163,12 @@
   - platform: mqtt
     name: "Molen omwentelingen"
     state_topic: "esp8266_node1/sensor/molen_omwentelingen/state"
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'

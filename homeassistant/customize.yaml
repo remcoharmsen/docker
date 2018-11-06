@@ -110,3 +110,5 @@
   sensor.molen_omwentelingen:
     icon: mdi:rotate-3d
     unit_of_measurement: tpm
+  sensor.time:
+    friendly_name: Huidige tijd

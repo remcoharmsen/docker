@@ -3,7 +3,7 @@
     light.bridge_led:
       state: on
       transition: 2
-      brightness_pct: 100
+      brightness_pct: 50
       rgb_color: [255,145,36]
     light.gateway_light_7811dcb3a831:
       state: on
