@@ -1,3 +1,4 @@
+.env
 bwdata/
 certificates/
 esphomeyaml/
@@ -5,6 +6,7 @@ grafana/
 influxdb/db/
 influxdb/meta/
 homeassistant/.cloud
+homeassistant/.storage
 homeassistant/entity_registry.yaml
 homeassistant/home-assistant_v2.db
 homeassistant/home-assistant.log
@@ -13,6 +15,7 @@ homeassistant/secrets.yaml
 mailserver/config
 portainer/
 radicale/
+remcoharmsen.com/
 shared/
 traefik/acme/acme.json
 
