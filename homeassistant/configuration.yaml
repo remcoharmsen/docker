@@ -13,9 +13,6 @@ config:
 
 http:
 #  api_password: !secret http_password
-#  base_url: https://devolharding.duckdns.org:8123
-#  ssl_certificate: /ssl/fullchain.pem
-#  ssl_key: /ssl/privkey.pem
   trusted_networks:
     - 127.0.0.1
     - ::1
@@ -26,7 +23,7 @@ updater:
 
 discovery:
 
-# history:
+history:
 
 # logbook:
 
@@ -36,12 +33,40 @@ sun:
   
 cloud:
 
-xiaomi_aqara:
-  discovery_retry: 20
-  gateways:
-    - host: 192.168.1.42
-      mac: !secret aqara_mac
-      key: !secret aqara_key
+automation: !include automations.yaml
+
+climate: !include climate.yaml
+
+conversation: !include conversations.yaml
+
+device_tracker: !include device_tracker.yaml
+
+frontend: !include frontend.yaml
+
+#google_assistant: !include google_assistant.yaml
+
+group: !include groups.yaml
+
+light: !include lights.yaml
+
+scene: !include scenes.yaml
+
+script: !include scripts.yaml
+
+sensor: !include sensors.yaml
+
+switch: !include switches.yaml
+
+zone: !include zones.yaml
+
+
+camera:
+  - platform: ffmpeg
+    name: Camera
+    input: !secret camera_url
+
+influxdb:
+  host: 192.168.1.14
 
 mqtt:
 #  broker: m21.cloudmqtt.com
@@ -58,9 +83,6 @@ notify:
     platform: pushbullet
     api_key: !secret pushbullet_apikey
 
-influxdb:
-  host: 192.168.1.14
-
 media_player LibreELEC:
   - platform: kodi
     host: 192.168.1.54
@@ -68,36 +90,15 @@ media_player LibreELEC:
     username: !secret kodi_username
     password: !secret kodi_password
 
-#camera:
-#  - platform: ffmpeg
-#    name: Camera
-#    input: !secret camera_url
+xiaomi_aqara:
+  discovery_retry: 20
+  gateways:
+    - host: 192.168.1.42
+      mac: !secret aqara_mac
+      key: !secret aqara_key
 
-automation: !include automations.yaml
 
-climate: !include climate.yaml
 
-conversation: !include conversations.yaml
-
-device_tracker: !include device_tracker.yaml
-
-frontend: !include frontend.yaml
-
-google_assistant: !include google_assistant.yaml
-
-group: !include groups.yaml
-
-light: !include lights.yaml
-
-scene: !include scenes.yaml
-
-script: !include scripts.yaml
-
-sensor: !include sensors.yaml
-
-switch: !include switches.yaml
-
-zone: !include zones.yaml
 
 
 input_datetime:

@@ -26,8 +26,6 @@
       - wind_bearing
       - pressure
       - humidity
-      - temperature_max
-      - temperature_min
       
   - platform: speedtest
     minute: 0
@@ -54,9 +52,9 @@
       battery_cube:
         friendly_name: "Cube"
         unit_of_measurement: '%'
-        value_template: "{{ states.binary_sensor.cube_158d00010fd2a3.attributes.battery_level }}"
+        value_template: "{{ states.binary_sensor.cube_158d00010fd2a3_2.attributes.battery_level }}"
         icon_template: >
-          {% set battery_level = states.binary_sensor.cube_158d00010fd2a3.attributes.battery_level | default(0) | int %}
+          {% set battery_level = states.binary_sensor.cube_158d00010fd2a3_2.attributes.battery_level | default(0) | int %}
           {% set battery_round = (battery_level / 10) | int * 10 %}
           {% if battery_round >= 100 %}
             mdi:battery

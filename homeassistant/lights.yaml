@@ -131,12 +131,3 @@
   state_topic: milight/states/0x6527/fut089/8
   <<: *MILIGHT_PARAMS
 
-- platform: mqtt_json
-  name: "MQTT ws2812b"
-  command_topic: nodemcuv3fastled/light/fastled_ws2812b_light/command
-  state_topic: nodemcuv3fastled/light/fastled_ws2812b_light/state
-  effect: true
-  effect_list:
-    - bpm
-    - candy cane  
-    - confetti  

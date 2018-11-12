@@ -80,6 +80,7 @@ services:
     command:
       - "/config"
       - "dashboard"
+    privileged: true
 
   mqtt:
     container_name: mosquitto

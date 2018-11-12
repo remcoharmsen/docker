@@ -20,8 +20,8 @@
     event: sunrise
     offset: 00:30:00
   action:
-    service: light.turn_off
-    entity_id: light.gateway_light_7811dcb3a831, light.bridge_led, light.mqtt_lampje, light.mqtt_keukenplint, light.mqtt_staande_lampen
+    service: homeassistant.turn_off
+    entity_id: group.woonkamer
 
 - alias: Lights on in the evening
   trigger:
@@ -45,13 +45,13 @@
       - wed
       - thu
   action:
-    service: light.turn_off
-    entity_id: light.gateway_light_7811dcb3a831, light.bridge_led, light.mqtt_lampje, light.mqtt_keukenplint, light.mqtt_staande_lampen
+    service: homeassistant.turn_off
+    entity_id: group.woonkamer
 
 - alias: Lights off, weekend bedtime
   trigger:
   - platform: template
-    value_template: "{{ states('sensor.time') == (states.input_datetime.woonkamerverlichting_weekend_avond_uit.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+    value_template: "{{ states('sensor.time') == (states.input_datetime.woonkamerverlichting_weekendavond_uit.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
   condition:
     condition: time
     weekday:
@@ -59,8 +59,9 @@
       - sat
       - sun
   action:
-    service: light.turn_off
-    entity_id: light.gateway_light_7811dcb3a831, light.bridge_led, light.mqtt_lampje, light.mqtt_keukenplint, light.mqtt_staande_lampen
+    service: homeassistant.turn_off
+    entity_id: group.woonkamer
+
 
 - alias: Remco is op het werk aangekomen
   trigger:
@@ -111,7 +112,7 @@
     platform: event
     event_type: cube_action
     event_data:
-      entity_id: binary_sensor.cube_158d00010fd2a3_2
+      entity_id: binary_sensor.cube_158d00010fd2a3
       action_type: rotate
   action:
     - service: light.turn_on
@@ -129,18 +130,18 @@
     platform: event
     event_type: cube_action
     event_data:
-      entity_id: binary_sensor.cube_158d00010fd2a3_2
+      entity_id: binary_sensor.cube_158d00010fd2a3
       action_type: tap_twice
   action:
-    service: light.toggle
-    entity_id: light.gateway_light_7811dcb3a831, light.bridge_led, light.mqtt_lampje, light.mqtt_staande_lampen
+    - service: light.toggle
+      entity_id: light.mqtt_staande_lampen
 
 - alias: Wissel kleurtemperatuur warm
   trigger:
     platform: event
     event_type: cube_action
     event_data:
-      entity_id: binary_sensor.cube_158d00010fd2a3_2
+      entity_id: binary_sensor.cube_158d00010fd2a3
       action_type: flip90
   action:
     - service: scene.turn_on
@@ -151,7 +152,7 @@
     platform: event
     event_type: cube_action
     event_data:
-      entity_id: binary_sensor.cube_158d00010fd2a3_2
+      entity_id: binary_sensor.cube_158d00010fd2a3
       action_type: flip180
   action:
     - service: scene.turn_on

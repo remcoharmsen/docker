@@ -10,6 +10,7 @@ default_view:
     - group.camera
     - group.energie
     - group.weer
+    - group.camera
 
 settings:
   view: yes
@@ -17,13 +18,14 @@ settings:
   entities:
     - group.verlichting
     - group.schakelaars
+    - group.systemen
     - group.instellingen
     - group.batterijen
     - group.automation
 
 verlichting:
   name: Verlichting
-  entities: 
+  entities:
     - light.bridge_led
     - light.gateway_light_7811dcb3a831
     - light.mqtt_staande_lampen
@@ -33,8 +35,6 @@ verlichting:
     - light.mqtt_overloop
     - light.mqtt_hal
     - light.mqtt_studeerkamer
-    - light.fastled_ws2812b_light_2
-    - light.fastled_ws2812b_light
 
 schakelaars:
   name: Schakelaars
@@ -127,7 +127,7 @@ hal:
     - binary_sensor.door_window_sensor_158d0001b70b6c
     - binary_sensor.door_window_sensor_158d0001b7acf8
     - binary_sensor.motion_sensor_158d00022369c4
-    - sensor.illumination_158d00022369c4 
+    - sensor.illumination_158d00022369c4
 energie:
   name: Energie
   entities:
@@ -140,8 +140,6 @@ weer:
     - sensor.dark_sky_summary
     - sensor.dark_sky_temperature
     - sensor.dark_sky_apparent_temperature
-    - sensor.dark_sky_daily_high_temperature
-    - sensor.dark_sky_daily_low_temperature
     - sensor.dark_sky_humidity
     - sensor.dark_sky_icon
     - sensor.dark_sky_precip
@@ -167,3 +165,8 @@ instellingen:
   - input_datetime.woonkamerverlichting_ochtend_aan
   - input_datetime.woonkamerverlichting_avond_uit
   - input_datetime.woonkamerverlichting_weekend_avond_uit
+
+camera:
+  name: Oprit
+  entities:
+  - camera.camera

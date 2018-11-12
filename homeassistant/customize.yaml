@@ -19,10 +19,6 @@
     friendly_name: Luchtdruk
   sensor.dark_sky_humidity:
     friendly_name: Luchtvochtigheid
-  sensor.dark_sky_daily_high_temperature:
-    friendly_name: "Maximum temperatuur"
-  sensor.dark_sky_daily_low_temperature:
-    friendly_name: "Minimum temperatuur"
 
 # Sun
   sun.sun:
@@ -77,7 +73,7 @@
     friendly_name: Beweging hal
   binary_sensor.motion_sensor_158d000224f448:
     friendly_name: Beweging overloop
-  binary_sensor.cube_158d00010fd2a3:
+  binary_sensor.cube_158d00010fd2a3_2:
     friendly_name: Cube
   binary_sensor.water_leak_sensor_158d0001c35984:
     friendly_name: Watersensor

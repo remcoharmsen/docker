@@ -1,0 +1,68 @@
+title: My Awesome Home
+# Include external resources
+resources:
+  - url: /local/my-custom-card.js
+    type: js
+  - url: /local/my-webfont.css
+    type: css
+
+# Optional background for all views. Check https://developer.mozilla.org/en-US/docs/Web/CSS/background for more examples.
+background: center / cover no-repeat url("/background.png") fixed
+# Exclude entities from "Unused entities" view
+excluded_entities:
+  - weblink.router
+views:
+    # View tab title.
+  - title: Example
+    # Unique id for direct access /lovelace/${id}. If you don't specify one, it is added automatically.
+    id: example
+    # Optional background (overwrites the global background).
+    background: radial-gradient(crimson, skyblue)
+    # Each view can have a different theme applied. Theme should be defined in the frontend.
+    theme: dark-mode
+    # The cards to show on this view.
+    cards:
+        # The filter card will filter entities for their state
+      - id: peoplehome # Every card needs an ID, if you don't specify one, it is added automatically.
+        type: entity-filter
+        entities:
+          - device_tracker.mi5_mi5
+          - device_tracker.4c57ca4388bb
+          - device_tracker.2047dac5e4d6
+          - device_tracker.b4cef6682a8e
+          - device_tracker.00eebd6368c6
+        state_filter:
+          - 'home'
+        card:
+          type: glance
+          title: People that are home
+
+        # The picture entity card will represent an entity with a picture
+      - type: picture-entity
+        image: https://www.home-assistant.io/images/default-social.png
+        entity: light.gateway_light_7811dcb3a831
+
+    # Specify a tab icon if you want the view tab to be an icon.
+  - icon: mdi:home-assistant
+    # Title of the view. Will be used as the tooltip for tab icon
+    title: Second view
+    cards:
+        # Entities card will take a list of entities and show their state.
+      - type: entities
+        # Title of the entities card
+        title: Example
+        # The entities here will be shown in the same order as specified.
+        # Each entry is an entity ID or a map with extra options.
+        entities:
+          - light.mqtt_hal
+          - light.mqtt_keuken
+          - light.mqtt_keukenplint
+          - light.mqtt_lampje
+          - light.mqtt_overloop
+          - light.mqtt_staande_lampen
+
+        # The markdown card will render markdown text.
+      - type: markdown
+        title: Lovelace
+        content: >
+          Welcome to your **Lovelace UI**.
