@@ -25,8 +25,7 @@ address = ":8080"
 [acme]
 email = "remcoharmsen@hotmail.com" #any email id will work
 storage = "/etc/traefik/acme/acme.json"
-caServer = "https://acme-v02.api.letsencrypt.org/directory"
-#caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+#caServer = "https://acme-v02.api.letsencrypt.org/directory"
 entryPoint = "https"
 acmeLogging = true 
 onDemand = false #create certificate when container is created
@@ -36,7 +35,7 @@ entryPoint = "http"
 
 [[acme.domains]]
    main = "remcoharmsen.com"
-   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","calendar.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com"]
+   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","calendar.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com","homeassistant.remcoharmsen.com","cloud.remcoharmsen.com"]
 
 # Connection to docker host system (docker.sock)
 [docker]

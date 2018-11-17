@@ -7,15 +7,18 @@ influxdb/db/
 influxdb/meta/
 homeassistant/.cloud
 homeassistant/.storage
+homeassistant/.configuration.yaml.swp
 homeassistant/entity_registry.yaml
 homeassistant/home-assistant_v2.db
 homeassistant/home-assistant.log
 homeassistant/known_devices.yaml
 homeassistant/secrets.yaml
 mailserver/config
+nextcloud/
+nextcloud_db/
 portainer/
 radicale/
 remcoharmsen.com/
 shared/
-traefik/acme/acme.json
+traefik/acme/
 
