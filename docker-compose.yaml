@@ -7,9 +7,22 @@ services:
     restart: always
     depends_on:
       - influxdb
+    ports:
+      - "8123:8123"
     volumes:
       - $USERDIR/docker/homeassistant:/config
     network_mode: host
+#    networks:
+#      - traefik_proxy
+#      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=home-assistant"
+      - "traefik.port=8123"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.rule=Host:home.${DOMAINNAME}"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.headers.SSLRedirect=true"
     privileged: true
 
   portainer:
@@ -94,44 +107,16 @@ services:
       - $USERDIR/docker/mosquitto/config:/mosquitto/config
       - $USERDIR/docker/mosquitto/log:/mosquitto/log
 
-  radicale:
-    container_name: radicale
-    image: tomsquest/docker-radicale
-    restart: always
-    ports:
-      - "5232:5232"
-    read_only: true
-    volumes:
-      - $USERDIR/docker/radicale/data:/data
-      - $USERDIR/docker/radicale/config:/config
-    networks:
-      - traefik_proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=radicale"
-      - "traefik.frontend.rule=Host:calendar.${DOMAINNAME}/"
-      - "traefik.frontend.entryPoints=http,https"
-      - "traefik.port=5232"
-      - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
-
   traefik:
     hostname: traefik
     image: traefik:latest
     container_name: traefik
     restart: always
     domainname: ${DOMAINNAME}
-    networks:
-      - default
-      - traefik_proxy
+    network_mode: host
+#    networks:
+#      - default
+#      - traefik_proxy
     ports:
       - "80:80"
       - "443:443"
@@ -270,6 +255,16 @@ services:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
+
+  duplicati:
+    image: duplicati/duplicati:canary
+    container_name: duplicati
+    restart: always
+    ports:
+      - "8200:8200"
+    volumes:
+      - $USERDIR/docker/duplicati:/data
+      - $USERDIR/docker:/source
 
 volumes:
   maildata:

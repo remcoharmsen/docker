@@ -25,17 +25,28 @@ address = ":8080"
 [acme]
 email = "remcoharmsen@hotmail.com" #any email id will work
 storage = "/etc/traefik/acme/acme.json"
-#caServer = "https://acme-v02.api.letsencrypt.org/directory"
-entryPoint = "https"
+caServer = "https://acme-v02.api.letsencrypt.org/directory"
 acmeLogging = true 
 onDemand = false #create certificate when container is created
 #onHostRule = true
-[acme.httpChallenge]
-entryPoint = "http"
+
+# httpChallenge voor subdomeinen
+entryPoint = "https"
+  [acme.httpChallenge]
+  entryPoint = "http"
 
 [[acme.domains]]
    main = "remcoharmsen.com"
-   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","calendar.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com","homeassistant.remcoharmsen.com","cloud.remcoharmsen.com"]
+   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com","home.remcoharmsen.com","cloud.remcoharmsen.com","bw.remcoharmsen.com"]
+
+# dnsChallenge voor wildcards
+#entryPoint = "https"
+#  [acme.dnsChallenge]
+#  provider = "transip"
+#  delayBeforeCheck = 0
+
+#[[acme.domains]]
+#  main = "*.remcoharmsen.com"
 
 # Connection to docker host system (docker.sock)
 [docker]

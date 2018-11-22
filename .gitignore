@@ -1,6 +1,9 @@
 .env
 bwdata/
+bwinstall/
+bitwarden/
 certificates/
+duplicati/
 esphomeyaml/
 grafana/
 influxdb/db/
