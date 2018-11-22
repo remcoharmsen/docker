@@ -2,6 +2,7 @@
     system_id: !secret pvoutput_systemid
     api_key: !secret pvoutput_apikey
     scan_interval: 120
+
   - platform: template
     sensors:
       power_generation:
@@ -170,3 +171,16 @@
       - 'time_date'
       - 'time_utc'
       - 'beat'
+
+  - platform: template
+    sensors:
+      omwentelingen:
+        value_template: '{{ ((states.sensor.molen_omwentelingen.state | float / 179 * -1)) | round(1) | abs() }}'
+
+  - platform: filter
+    name: "omwentelingen gefilterd"
+    entity_id: sensor.omwentelingen
+    filters:
+      - filter: range
+        lower_bound: 0
+        upper_bound: 25

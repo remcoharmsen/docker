@@ -65,7 +65,7 @@ systemen:
     - sensor.cpu_used
     - sensor.disk_used_home
     - sensor.last_boot
-    - sensor.molen_omwentelingen
+    - sensor.omwentelingen
     - sensor.time
 
 automation:
