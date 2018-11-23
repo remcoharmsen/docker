@@ -1,0 +1,64 @@
+logLevel = "WARN" #DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+defaultEntryPoints = ["http", "https"]
+
+# WEB interface of Traefik - it will show web page with overview of frontend and backend configurations 
+[web]
+address = ":8080"
+  [web.auth.basic]
+  usersFile = "/shared/.htpasswd"
+
+# Force HTTPS
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+#    [entryPoints.https.whitelist]
+#      sourceRange = ["0.0.0.0"]
+#      useXForwardedFor = true
+
+[file]
+  watch = true
+  filename = "/etc/traefik/rules.toml"
+
+# Let's encrypt configuration
+[acme]
+email = "some@email.com" #any email id will work
+storage = "/etc/traefik/acme/acme.json"
+caServer = "https://acme-v02.api.letsencrypt.org/directory"
+acmeLogging = true 
+onDemand = false #create certificate when container is created
+#onHostRule = true
+
+# httpChallenge for subdomains
+entryPoint = "https"
+  [acme.httpChallenge]
+  entryPoint = "http"
+
+[[acme.domains]]
+   main = "domain.com"
+   sans = ["www.domain.com","mail.domain.com"]
+
+# dnsChallenge for wildcards
+#entryPoint = "https"
+#  [acme.dnsChallenge]
+#  provider = "myprovider"
+#  delayBeforeCheck = 0
+
+#[[acme.domains]]
+#  main = "*.domain.com"
+
+# Connection to docker host system (docker.sock)
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "domain.com"
+watch = true
+# This will hide all docker containers that don't have explicitly  
+# set label to "enable"
+exposedbydefault = false
