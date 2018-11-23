@@ -16,7 +16,7 @@ homeassistant/home-assistant_v2.db
 homeassistant/home-assistant.log
 homeassistant/known_devices.yaml
 homeassistant/secrets.yaml
-mailserver/config
+mailserver/
 nextcloud/
 nextcloud_db/
 portainer/
