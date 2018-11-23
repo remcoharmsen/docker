@@ -304,6 +304,7 @@ services:
     environment:
       - SERVER_ADMIN_EMAL=bitwarden@${DOMAINNAME}
       - DOMAIN=bw.${DOMAINNAME}
+      - SIGNUPS_ALLOWED=false
       - SMTP_HOST=smtp.${DOMAINNAME}
       - SMTP_FROM=bitwarden@${DOMAINNAME}
       - SMTP_PORT=465
@@ -320,7 +321,6 @@ services:
       - "traefik.frontend.rule=Host:bw.${DOMAINNAME}"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.whiteList.sourceRange=$HOME_IP/32"
 
 volumes:
   maildata:
