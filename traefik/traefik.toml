@@ -11,11 +11,17 @@ address = ":8080"
 [entryPoints]
   [entryPoints.http]
   address = ":80"
+
     [entryPoints.http.redirect]
     entryPoint = "https"
+
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
+
+#    [entryPoints.https.whitelist]
+#      sourceRange = ["85.144.103.129"]
+#      useXForwardedFor = true
 
 [file]
   watch = true
@@ -37,7 +43,7 @@ entryPoint = "https"
 
 [[acme.domains]]
    main = "remcoharmsen.com"
-   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com","home.remcoharmsen.com","cloud.remcoharmsen.com","bw.remcoharmsen.com"]
+   sans = ["www.remcoharmsen.com","mail.remcoharmsen.com","smtp.remcoharmsen.com","imap.remcoharmsen.com","home.remcoharmsen.com","cloud.remcoharmsen.com","bw.remcoharmsen.com","grafana.remcoharmsen.com","portainer.remcoharmsen.com","backup.remcoharmsen.com"]
 
 # dnsChallenge voor wildcards
 #entryPoint = "https"

@@ -23,6 +23,14 @@ services:
       - "traefik.frontend.rule=Host:home.${DOMAINNAME}"
       - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
     privileged: true
 
   portainer:
@@ -40,11 +48,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=portainer"
-      - "traefik.frontend.redirect.regex=^(.*)/portainer$$"
-      - "traefik.frontend.redirect.replacement=$$1/portainer/"
-      - "traefik.frontend.rule=PathPrefix:/portainer;ReplacePathRegex: ^/portainer/(.*) /$$1"
       - "traefik.port=9000"
       - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"
+      - "traefik.frontend.entryPoints=http,https"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -54,6 +61,7 @@ services:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
+      - "traefik.frontend.whiteList.sourceRange=$HOME_IP/32"
 
   influxdb:
     container_name: influxdb
@@ -80,6 +88,17 @@ services:
     environment:
       GF_SECURITY_ADMIN_PASSWORD: 'secret'
     user: "1000"
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=grafana"
+      - "traefik.port=3000"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.rule=Host:grafana.${DOMAINNAME}"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.whiteList.sourceRange=$HOME_IP/32"
 
   esphomeyaml:
     container_name: esphomeyaml
@@ -121,10 +140,13 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $USERDIR/docker/traefik:/etc/traefik
+      - $USERDIR/docker/shared:/shared
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
-#      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"  
       - "traefik.frontend.rule=Host:${DOMAINNAME}; PathPrefixStrip: /traefik"
       - "traefik.port=8080"
       - "traefik.docker.network=traefik_proxy"
@@ -137,10 +159,7 @@ services:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - $USERDIR/docker/traefik:/etc/traefik
-      - $USERDIR/docker/shared:/shared
+      - "traefik.frontend.whiteList.sourceRange=$HOME_IP/32"
 
   extractor:
     container_name: extractor
@@ -150,14 +169,14 @@ services:
       - $USERDIR/docker/traefik/acme/acme.json:/certs-extractor/acme.json:ro
       - $USERDIR/docker/certificates:/certs-extractor/certs/
 
-  remcoharmsen.com:
+  website:
     container_name: website
     image: nginx:latest
     restart: always
     ports:
       - "8081:80"
     volumes:
-      - $USERDIR/docker/remcoharmsen.com:/usr/share/nginx/html:ro
+      - $USERDIR/docker/website:/usr/share/nginx/html:ro
     networks:
       - traefik_proxy
     labels:
@@ -191,8 +210,6 @@ services:
     - "465:465"
     - "587:587"
     - "993:993"
-#    - "110:110"
-#    - "995:995"
     volumes:
     - maildata:/var/mail
     - mailstate:/var/mail-state
@@ -210,7 +227,6 @@ services:
     - ONE_DIR=1
     - DMS_DEBUG=0
     cap_add:
-#    - NET_ADMIN
     - SYS_PTRACE
 
 
@@ -221,8 +237,8 @@ services:
     volumes:
       - $USERDIR/docker/nextcloud_db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=nextcloudM2x7598031
-      - MYSQL_PASSWORD=nextcloudM2x7598031
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
 
@@ -265,6 +281,46 @@ services:
     volumes:
       - $USERDIR/docker/duplicati:/data
       - $USERDIR/docker:/source
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=duplicati"
+      - "traefik.port=8200"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.rule=Host:backup.${DOMAINNAME}"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.whiteList.sourceRange=$HOME_IP/32"
+
+  bitwarden:
+    image: mprasil/bitwarden:latest
+    container_name: bitwarden
+    restart: always
+    ports: 
+      - "8889:80"
+    volumes:
+      - $USERDIR/docker/bitwarden:/data
+    environment:
+      - SERVER_ADMIN_EMAL=bitwarden@${DOMAINNAME}
+      - DOMAIN=bw.${DOMAINNAME}
+      - SMTP_HOST=smtp.${DOMAINNAME}
+      - SMTP_FROM=bitwarden@${DOMAINNAME}
+      - SMTP_PORT=465
+      - SMTP_SSL=true
+      - SMTP_USERNAME=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=bitwarden"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.rule=Host:bw.${DOMAINNAME}"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.whiteList.sourceRange=$HOME_IP/32"
 
 volumes:
   maildata:
